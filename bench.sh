@@ -2,6 +2,7 @@
 
 yum install epel-release -y
 yum install sysbench fio mariadb-server -y
+service mariadb start
 
 #Prepare test files for Sysbench
 sysbench --test=fileio --file-total-size=8G prepare 
