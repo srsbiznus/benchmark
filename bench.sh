@@ -55,6 +55,9 @@ cd phoronix-test-suite/
 echo "net.ipv6.conf.all.disable_ipv6 = 1" >> /etc/sysctl.conf
 sysctl -p
 echo nn | /usr/bin/phoronix-test-suite batch-setup
+/usr/bin/phoronix-test-suite install pts/apache
+/usr/bin/phoronix-test-suite install pts/nginx
+/usr/bin/phoronix-test-suite install pts/phpbench
 
 /usr/bin/phoronix-test-suite batch-benchmark pts/apache
 /usr/bin/phoronix-test-suite batch-benchmark pts/nginx
