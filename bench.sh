@@ -59,7 +59,7 @@ echo nn | /usr/bin/phoronix-test-suite batch-setup
 /usr/bin/phoronix-test-suite install pts/nginx
 /usr/bin/phoronix-test-suite install pts/phpbench
 
-/usr/bin/phoronix-test-suite batch-benchmark pts/apache
-/usr/bin/phoronix-test-suite batch-benchmark pts/nginx
-/usr/bin/phoronix-test-suite batch-benchmark pts/phpbench
+/usr/bin/phoronix-test-suite batch-run pts/apache
+/usr/bin/phoronix-test-suite batch-run pts/nginx
+/usr/bin/phoronix-test-suite batch-run pts/phpbench
 
