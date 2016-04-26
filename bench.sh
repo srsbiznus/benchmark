@@ -5,7 +5,7 @@ yum install wget php-cli php-xml bzip2 sysbench fio mariadb-server -y
 service mariadb start
 
 #Prepare test files for Sysbench
-sysbench --test=fileio --file-total-size=8G prepare 
+nohup sysbench --test=fileio --file-total-size=8G prepare 
 sleep 10 
 sync
 
@@ -18,19 +18,51 @@ sleep 10
 sync
 
 #Sysbench Random Write Test
-for each in 1 4 8 16 32 64; do sysbench --test=fileio --file-total-size=8G --file-test-mode=rndwr --max-time=240 --max-requests=0 --file-block-size=4K --num-threads=$each --file-extra-flags=direct run; sleep 10; done
+echo "Starting Random Write Sysbench Test"
+for each in 1 4 8 16 32 64; 
+	do 
+		echo "Starting $each thread Random Write"
+		sysbench --test=fileio --file-total-size=8G --file-test-mode=rndwr --max-time=300 --max-requests=0 --file-block-size=4K --num-threads=$each --file-extra-flags=direct run >> ./$each-thread-randWrite-results; 
+		sleep 10; 
+	done
+	
+echo "###IOPS Result Random Writes###"
+grep "Requests/sec executed" randWrite-results | awk '{print $1}'
+
+echo
+
+echo "###Latency Result Random Writes###"
+grep "approx.  95 percentile:" randWrite-results | awk '{print $4}'| cut -d'm' -f1
 
 sync
 
 #Sysbench Random Read Test
-for each in 1 4 8 16 32 64; do sysbench --test=fileio --file-total-size=8G --file-test-mode=rndrd --max-time=240 --max-requests=0 --file-block-size=4K --num-threads=$each --file-extra-flags=direct run; sleep 10; done 
+echo "Starting Random Read Sysbench Test"
+for each in 1 4 8 16 32 64; 
+	do 
+		echo "Starting $each thread Random Read"
+		sysbench --test=fileio --file-total-size=8G --file-test-mode=rndrd --max-time=300 --max-requests=0 --file-block-size=4K --num-threads=$each --file-extra-flags=direct run >> ./$each-thread-randRead-results; 
+		sleep 10; 
+	done 
+	
+echo "###IOPS Result Random Read###"
+grep "Requests/sec executed" randRead-results | awk '{print $1}'
+
+echo
+
+echo "###Latency Result Random Read###"
+grep "approx.  95 percentile:" randRead-results | awk '{print $4}'| cut -d'm' -f1
 
 sync
-rm -f test_*
+sysbench --test=fileio --file-total-size=8G cleanup
 sync
 
 #Sysbench OLTP Test
-for each in 1 4 8 16 32 64; do sysbench --test=oltp --db-driver=mysql --oltp-table-size=40000000 --mysql-db=sysbench --mysql-user=sysbench --mysql-password=password --max-time=240 --max-requests=0 --num-threads=$each run; sleep 30; done
+for each in 1 4 8 16 32 64; 
+	do 
+		sysbench --test=oltp --db-driver=mysql --oltp-table-size=40000000 --mysql-db=sysbench --mysql-user=sysbench --mysql-password=password --max-time=300 --max-requests=0 --num-threads=$each run >> ./oltp-results; 
+		sleep 30; 
+	done
 
 sync
 
