@@ -64,6 +64,14 @@ for each in 1 4 8 16 32 64;
 		sleep 30; 
 	done
 
+echo "###Read/Write Requests Per Second###"
+grep "read/write requests:" test.txt | tr -d '()' | awk '{print $4}'
+
+echo
+
+echo "###Transactions Per Second###"
+grep "transactions:" test.txt | tr -d '()' | awk '{print $3}'
+
 sync
 
 fio --time_based --name=benchmark --size=8G --runtime=300 --filename=rand --ioengine=libaio --randrepeat=0 --iodepth=32 --direct=1 --invalidate=1 --verify=0 --verify_fatal=0 --numjobs=4 --rw=randwrite --blocksize=4k --group_reporting
