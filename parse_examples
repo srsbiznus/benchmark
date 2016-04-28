@@ -1,0 +1,6 @@
+##Parses Sysbench Random Write and Random Read 
+grep "Requests/sec executed" randWrite-results | tr -d '()' | awk '{print $1}'
+grep "Requests/sec executed" randRead-results | tr -d '()' | awk '{print $1}'
+
+##Parses Sysbench OLTP 
+grep "read/write requests:" oltp-results | tr -d '()' | awk '{print $4}'
