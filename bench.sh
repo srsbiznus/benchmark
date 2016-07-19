@@ -65,12 +65,12 @@ for each in 1 4 8 16 32 64;
 	done
 
 echo "###Read/Write Requests Per Second###"
-grep "read/write requests:" test.txt | tr -d '()' | awk '{print $4}'
+grep "read/write requests:" oltp-results | tr -d '()' | awk '{print $4}'
 
 echo
 
 echo "###Transactions Per Second###"
-grep "transactions:" test.txt | tr -d '()' | awk '{print $3}'
+grep "transactions:" oltp-results | tr -d '()' | awk '{print $3}'
 
 sync
 
