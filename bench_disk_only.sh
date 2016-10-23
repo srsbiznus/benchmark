@@ -54,7 +54,7 @@ echo "###Latency Result Random Read###"
 grep "approx.  95 percentile:" randRead-results | awk '{print $4}'| cut -d'm' -f1
 
 sync
-sysbench --test=fileio --file-total-size=8G cleanup
+rm -f test_*
 sync
 
 #Sysbench OLTP Test
