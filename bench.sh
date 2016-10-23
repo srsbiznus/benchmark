@@ -2,6 +2,12 @@
 
 yum install epel-release -y
 yum install wget php-cli php-xml bzip2 sysbench fio mariadb-server -y
+wget http://www.phoronix-test-suite.com/download.php?file=phoronix-test-suite-6.2.2 -O phoronix-test-suite_6.2.2.tar.gz
+tar xvf phoronix-test-suite_6.2.2.tar.gz
+phoronix-test-suite/install-sh
+echo "net.ipv6.conf.all.disable_ipv6 = 1" >> /etc/sysctl.conf
+sysctl -p
+/usr/bin/phoronix-test-suite batch-setup
 service mariadb start
 
 #Prepare test files for Sysbench
@@ -54,7 +60,7 @@ echo "###Latency Result Random Read###"
 grep "approx.  95 percentile:" randRead-results | awk '{print $4}'| cut -d'm' -f1
 
 sync
-sysbench --test=fileio --file-total-size=8G cleanup
+rm -f test_*
 sync
 
 #Sysbench OLTP Test
@@ -74,32 +80,23 @@ grep "transactions:" oltp-results | tr -d '()' | awk '{print $3}'
 
 sync
 
-fio --time_based --name=benchmark --size=8G --runtime=300 --filename=rand --ioengine=libaio --randrepeat=0 --iodepth=32 --direct=1 --invalidate=1 --verify=0 --verify_fatal=0 --numjobs=4 --rw=randwrite --blocksize=4k --group_reporting
+fio --time_based --name=benchmark --size=8G --runtime=300 --filename=rand --ioengine=libaio --randrepeat=0 --iodepth=32 --direct=1 --invalidate=1 --verify=0 --verify_fatal=0 --numjobs=4 --rw=randwrite --blocksize=4k --group_reporting > fio_rw
 
 sleep 10
 sync
 rm -f rand
 sleep 10
 
-fio --time_based --name=benchmark --size=8G --runtime=300 --filename=rand --ioengine=libaio --randrepeat=0 --iodepth=32 --direct=1 --invalidate=1 --verify=0 --verify_fatal=0 --numjobs=4 --rw=randread --blocksize=4k --group_reporting
+fio --time_based --name=benchmark --size=8G --runtime=300 --filename=rand --ioengine=libaio --randrepeat=0 --iodepth=32 --direct=1 --invalidate=1 --verify=0 --verify_fatal=0 --numjobs=4 --rw=randread --blocksize=4k --group_reporting > fio_rr
 
 sleep 10
 sync
 rm -f rand
 sleep 10
 
-wget http://www.phoronix-test-suite.com/download.php?file=phoronix-test-suite-6.2.2 -O phoronix-test-suite_6.2.2.tar.gz
-tar xvf phoronix-test-suite_6.2.2.tar.gz
-cd phoronix-test-suite/
-./install-sh
-echo "net.ipv6.conf.all.disable_ipv6 = 1" >> /etc/sysctl.conf
-sysctl -p
-echo nn | /usr/bin/phoronix-test-suite batch-setup
+
 /usr/bin/phoronix-test-suite install pts/apache
 /usr/bin/phoronix-test-suite install pts/nginx
-/usr/bin/phoronix-test-suite install pts/phpbench
-
 /usr/bin/phoronix-test-suite batch-run pts/apache
 /usr/bin/phoronix-test-suite batch-run pts/nginx
-/usr/bin/phoronix-test-suite batch-run pts/phpbench
 
