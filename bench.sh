@@ -4,7 +4,8 @@ yum install epel-release -y
 yum install wget php-cli php-xml bzip2 sysbench fio mariadb-server -y
 wget http://www.phoronix-test-suite.com/download.php?file=phoronix-test-suite-6.2.2 -O phoronix-test-suite_6.2.2.tar.gz
 tar xvf phoronix-test-suite_6.2.2.tar.gz
-phoronix-test-suite/install-sh
+cd phoronix-test-suite/
+./install-sh
 echo "net.ipv6.conf.all.disable_ipv6 = 1" >> /etc/sysctl.conf
 sysctl -p
 /usr/bin/phoronix-test-suite batch-setup
