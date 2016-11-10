@@ -8,6 +8,11 @@ phoronix-test-suite/install-sh
 echo "net.ipv6.conf.all.disable_ipv6 = 1" >> /etc/sysctl.conf
 sysctl -p
 /usr/bin/phoronix-test-suite batch-setup
+/usr/bin/phoronix-test-suite install pts/apache
+/usr/bin/phoronix-test-suite install pts/nginx
+/usr/bin/phoronix-test-suite batch-run pts/apache
+/usr/bin/phoronix-test-suite batch-run pts/nginx
+
 service mariadb start
 
 #Prepare test files for Sysbench
@@ -93,10 +98,4 @@ sleep 10
 sync
 rm -f rand
 sleep 10
-
-
-/usr/bin/phoronix-test-suite install pts/apache
-/usr/bin/phoronix-test-suite install pts/nginx
-/usr/bin/phoronix-test-suite batch-run pts/apache
-/usr/bin/phoronix-test-suite batch-run pts/nginx
 
