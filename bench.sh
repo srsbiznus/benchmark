@@ -1,7 +1,7 @@
 #!/bin/bash
 
 yum install epel-release -y
-yum install wget php-cli php-xml bzip2 sysbench fio mariadb-server -y
+yum install wget php-cli php-xml bzip2 sysbench fio -y
 
 service mariadb start
 
@@ -88,14 +88,14 @@ sleep 10
 sync
 rm -f rand
 sleep 10
-wget http://www.phoronix-test-suite.com/download.php?file=phoronix-test-suite-6.2.2 -O phoronix-test-suite_6.2.2.tar.gz
-tar xvf phoronix-test-suite_6.2.2.tar.gz
-cd phoronix-test-suite/
+wget https://github.com/phoronix-test-suite/phoronix-test-suite/archive/v6.8.0.zip
+unzip v6.8.0.zip
+cd phoronix-test-suite-6.8.0/
 ./install-sh
-echo "net.ipv6.conf.all.disable_ipv6 = 1" >> /etc/sysctl.conf
-sysctl -p
+cd
 /usr/bin/phoronix-test-suite batch-setup
 /usr/bin/phoronix-test-suite install pts/apache
 /usr/bin/phoronix-test-suite install pts/nginx
 /usr/bin/phoronix-test-suite batch-run pts/apache
 /usr/bin/phoronix-test-suite batch-run pts/nginx
+dist/Geekbench-3.4.1-Linux/geekbench_x86_64
