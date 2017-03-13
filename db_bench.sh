@@ -1,6 +1,6 @@
 #!/bin/bash
-
-yum install epel-release -y
+wget https://www.percona.com/redir/downloads/percona-release/redhat/latest/percona-release-0.1-4.noarch.rpm
+rpm -Uvh percona-release-0.1-4.noarch.rpm
 yum install wget sysbench mysql mariadb-server -y
 service mariadb start
 
@@ -13,4 +13,4 @@ password=$4
 mysql -e "CREATE DATABASE $database;"  
 mysql -e "CREATE USER '$username'@'$hostname' IDENTIFIED BY '$password';"  
 mysql -e "GRANT ALL PRIVILEGES ON *.* TO '$database'@'$hostname' IDENTIFIED  BY '$password';" 
-sysbench --test=oltp --db-driver=mysql --oltp-table-size=40000000 --mysql-host=$hostname --mysql-db=$database --mysql-user=$username --mysql-password=$password prepare 
+sysbench --test=/usr/share/doc/sysbench/tests/db/oltp.lua --mysql-host=$hostname --mysql-port=3306 --mysql-user=$username --mysqlpassword=$password --mysql-db=$database --mysql-table-engine=innodb --oltp-table-size=25000 --oltp-tables-count=250 --db-driver=mysql prepare
