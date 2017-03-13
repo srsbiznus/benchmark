@@ -1,7 +1,8 @@
 #!/bin/bash
 
 yum install epel-release -y
-yum install wget sysbench mysql -y
+yum install wget sysbench mysql mariadb-server -y
+service mariadb start
 
 hostname=$1
 database=$2
