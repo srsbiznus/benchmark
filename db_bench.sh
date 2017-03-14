@@ -17,17 +17,33 @@ sysbench --test=/usr/share/doc/sysbench/tests/db/oltp.lua --mysql-host=$hostname
 
 #sysbench --test=/usr/share/doc/sysbench/tests/db/oltp.lua --mysql-host=$hostname --oltp-tables-count=250 --mysql-user=$username --mysql-password=$password --mysql-port=3306 --db-driver=mysql --oltp-tablesize=25000 --mysql-db=$database --max-requests=0 --oltp-simple-ranges=0 --oltp-distinct-ranges=0 --oltp-sum-ranges=0 --oltp-order-ranges=0 --maxtime=300 --oltp-read-only=on --num-threads=64 run
 
-#Sysbench OLTP Test
+#Sysbench Read Heavy OLTP Test
 for each in 1 4 8 16 32 64; 
 	do 
 		sysbench --test=/usr/share/doc/sysbench/tests/db/oltp.lua --mysql-host=$hostname --oltp-tables-count=250 --mysql-user=$username --mysql-password=$password --mysql-port=3306 --db-driver=mysql --oltp-tablesize=25000 --mysql-db=$database --max-requests=0 --oltp-simple-ranges=0 --oltp-distinct-ranges=0 --oltp-sum-ranges=0 --oltp-order-ranges=0 --maxtime=300 --oltp-read-only=on --num-threads=$each run
- >> ./oltp-results; 
+ >> ./read-oltp-results; 
 		sleep 30; 
 	done
 
 echo "###Read/Write Requests Per Second###"
-grep "read/write requests:" oltp-results | tr -d '()' | awk '{print $4}'
+grep "read/write requests:" read-oltp-results | tr -d '()' | awk '{print $4}'
 echo
 echo "###Transactions Per Second###"
-grep "transactions:" oltp-results | tr -d '()' | awk '{print $3}'
+grep "transactions:" read-oltp-results | tr -d '()' | awk '{print $3}'
 sync
+
+#Sysbench Write Heavy OLTP Test
+for each in 1 4 8 16 32 64; 
+	do 
+		sysbench --test=/usr/share/doc/sysbench/tests/db/oltp.lua --mysql-host=$hostname --oltp-tables-count=250 --mysql-user=$username --mysql-password=$password --mysql-port=3306 --db-driver=mysql --oltp-tablesize=25000 --mysql-db=$database --max-requests=0 --max-time=300 --oltp-simple-ranges=0 --oltp-distinct-ranges=0 --oltp-sum-ranges=0 --oltporder-ranges=0 --oltp-point-selects=0 --num-threads=$each --randtype=uniform run
+>> ./write-oltp-results; 
+		sleep 30; 
+	done
+
+echo "###Read/Write Requests Per Second###"
+grep "read/write requests:" write-oltp-results | tr -d '()' | awk '{print $4}'
+echo
+echo "###Transactions Per Second###"
+grep "transactions:" write-oltp-results | tr -d '()' | awk '{print $3}'
+sync
+
