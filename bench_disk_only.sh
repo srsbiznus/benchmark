@@ -1,8 +1,8 @@
 #!/bin/bash
 
-yum install epel-release -y
-yum install wget php-cli php-xml bzip2 sysbench fio mariadb-server -y
-service mariadb start
+#yum install epel-release -y
+#yum install wget php-cli php-xml bzip2 sysbench fio mariadb-server -y
+#service mariadb start
 
 #Prepare test files for Sysbench
 nohup sysbench --test=fileio --file-total-size=8G prepare 
