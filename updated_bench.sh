@@ -13,7 +13,7 @@ sync
 mysql -e "CREATE DATABASE sysbench;"  
 mysql -e "CREATE USER 'sysbench'@'localhost' IDENTIFIED BY 'password';"  
 mysql -e "GRANT ALL PRIVILEGES ON *.* TO 'sysbench'@'localhost' IDENTIFIED  BY 'password';" 
-sysbench --test=oltp --db-driver=mysql --oltp-table-size=40000000 --mysql-db=sysbench --mysql-user=sysbench --mysql-password=password prepare 
+sysbench /usr/share/sysbench/tests/include/oltp_legacy/oltp.lua --db-driver=mysql --oltp-table-size=40000000 --mysql-db=sysbench --mysql-user=sysbench --mysql-password=password prepare 
 sleep 10
 sync
 
