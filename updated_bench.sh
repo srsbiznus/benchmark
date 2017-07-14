@@ -5,7 +5,7 @@
 #service mariadb start
 
 #Prepare test files for Sysbench
-nohup sysbench --test=fileio --file-total-size=8G prepare 
+nohup sysbench fileio --file-total-size=8G prepare 
 sleep 10 
 sync
 
@@ -22,7 +22,7 @@ echo "Starting Random Write Sysbench Test"
 for each in 1 4 8 16 32 64; 
 	do 
 		echo "Starting $each thread Random Write"
-		sysbench --test=fileio --file-total-size=8G --file-test-mode=rndwr --time=300 --file-block-size=4K --threads=$each --file-extra-flags=direct run >> ./randWrite-results; 
+		sysbench fileio --file-total-size=8G --file-test-mode=rndwr --time=300 --file-block-size=4K --threads=$each --file-extra-flags=direct run >> ./randWrite-results; 
 		sleep 10; 
 	done
 	
@@ -41,7 +41,7 @@ echo "Starting Random Read Sysbench Test"
 for each in 1 4 8 16 32 64; 
 	do 
 		echo "Starting $each thread Random Read"
-		sysbench --test=fileio --file-total-size=8G --file-test-mode=rndrd --time=300 --file-block-size=4K --threads=$each --file-extra-flags=direct run >> ./randRead-results; 
+		sysbench fileio --file-total-size=8G --file-test-mode=rndrd --time=300 --file-block-size=4K --threads=$each --file-extra-flags=direct run >> ./randRead-results; 
 		sleep 10; 
 	done 
 	
@@ -60,7 +60,7 @@ sync
 #Sysbench OLTP Test
 for each in 1 4 8 16 32 64; 
 	do 
-		sysbench --test=oltp --db-driver=mysql --oltp-table-size=40000000 --mysql-db=sysbench --mysql-user=sysbench --mysql-password=password --time=300 --threads=$each run >> ./oltp-results; 
+		sysbench /usr/share/sysbench/oltp_read_write.lua --db-driver=mysql --oltp-table-size=40000000 --mysql-db=sysbench --mysql-user=sysbench --mysql-password=password --time=300 --threads=$each run >> ./oltp-results; 
 		sleep 30; 
 	done
 
