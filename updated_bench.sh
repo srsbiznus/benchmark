@@ -13,7 +13,7 @@ sync
 mysql -e "CREATE DATABASE sysbench;"  
 mysql -e "CREATE USER 'sysbench'@'localhost' IDENTIFIED BY 'password';"  
 mysql -e "GRANT ALL PRIVILEGES ON *.* TO 'sysbench'@'localhost' IDENTIFIED  BY 'password';" 
-sysbench /usr/share/sysbench/tests/include/oltp_legacy/oltp.lua --db-driver=mysql --oltp-table-size=40000000 --mysql-db=sysbench --mysql-user=sysbench --mysql-password=password prepare 
+sysbench /usr/share/sysbench/oltp_read_write.lua prepare --db-driver=mysql --table-size=40000000 --mysql-db=sysbench --mysql-user=sysbench --mysql-password=password
 sleep 10
 sync
 
@@ -60,7 +60,7 @@ sync
 #Sysbench OLTP Test
 for each in 1 4 8 16 32 64; 
 	do 
-		sysbench /usr/share/sysbench/oltp_read_write.lua --db-driver=mysql --oltp-table-size=40000000 --mysql-db=sysbench --mysql-user=sysbench --mysql-password=password --time=300 --threads=$each run >> ./oltp-results; 
+		sysbench /usr/share/sysbench/oltp_read_write.lua --db-driver=mysql --table-size=40000000 --mysql-db=sysbench --mysql-user=sysbench --mysql-password=password --time=300 --threads=$each run >> ./oltp-results; 
 		sleep 30; 
 	done
 
