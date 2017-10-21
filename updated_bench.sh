@@ -1,8 +1,14 @@
 #!/bin/bash
 
+#If using **Debian / Ubuntu**, uncomment below to install sysbench and fio
+#curl -s https://packagecloud.io/install/repositories/akopytov/sysbench/script.deb.sh | sudo bash
+#sudo apt -y install sysbench fio
+
+#If running **CentOS 7 with/without cpanel**, uncomment below to install sysbench and fio
 #yum install epel-release -y
-#yum install wget php-cli php-xml bzip2 sysbench fio mariadb-server -y
-#service mariadb start
+#curl -s https://packagecloud.io/install/repositories/akopytov/sysbench/script.rpm.sh | sudo bash
+#yum install fio sysbench -y
+
 
 #Prepare test files for Sysbench
 nohup sysbench fileio --file-total-size=8G prepare 
