@@ -101,4 +101,10 @@ sync
 rm -f rand
 sleep 10
 
-151.101.44.133
+#optional fio 3.1
+#wget https://github.com/axboe/fio/archive/fio-3.1.zip
+#unzip fio-3.1.zip
+#cd fio-fio-3.1
+#./configure 
+#make 
+#make install
