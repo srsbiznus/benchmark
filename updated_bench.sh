@@ -70,13 +70,20 @@ for each in 1 4 8 16 32 64;
 		sleep 30; 
 	done
 
-echo "###Read/Write Requests Per Second###"
-grep "read/write requests:" oltp-results | tr -d '()' | awk '{print $4}'
+echo "###Queries Per Second###"
+grep "queries:" oltp-results | awk '{print $3}' | sed 's/(//'
 
 echo
 
 echo "###Transactions Per Second###"
-grep "transactions:" oltp-results | tr -d '()' | awk '{print $3}'
+grep "transactions::" oltp-results | awk '{print $3}' | sed 's/(//'
+
+echo
+
+echo "###95% Response Times - Queries###"
+grep "95th percentile:" oltp-results | awk '{print $3}'
+
+echo
 
 sync
 
