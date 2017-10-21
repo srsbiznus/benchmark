@@ -27,12 +27,12 @@ for each in 1 4 8 16 32 64;
 	done
 	
 echo "###IOPS Result Random Writes###"
-grep "Requests/sec executed" randWrite-results | awk '{print $1}'
+grep "writes/s:" randWrite-results | awk '{print $2}'
 
 echo
 
-echo "###Latency Result Random Writes###"
-grep "approx.  95 percentile:" randWrite-results | awk '{print $4}'| cut -d'm' -f1
+echo "###95% Response Times - Random Writes###"
+grep "95th percentile:" randWrite-results | awk '{print $3}'
 
 sync
 
@@ -46,12 +46,12 @@ for each in 1 4 8 16 32 64;
 	done 
 	
 echo "###IOPS Result Random Read###"
-grep "Requests/sec executed" randRead-results | awk '{print $1}'
+grep "reads/s:" randRead-results | awk '{print $2}'
 
 echo
 
-echo "###Latency Result Random Read###"
-grep "approx.  95 percentile:" randRead-results | awk '{print $4}'| cut -d'm' -f1
+echo "###95% Response Times - Random Read###"
+grep "95th percentile:" randRead-results | awk '{print $3}'
 
 sync
 rm -f test_*
